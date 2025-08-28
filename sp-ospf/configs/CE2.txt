@@ -1,5 +1,5 @@
 !
-! Last configuration change at 04:21:12 UTC Wed Aug 27 2025
+! Last configuration change at 02:10:12 UTC Thu Aug 28 2025
 !
 version 15.8
 service timestamps debug datetime msec
@@ -34,7 +34,8 @@ mmi snmp-timeout 180
 !
 no ip domain lookup
 ip cef
-no ipv6 cef
+ipv6 unicast-routing
+ipv6 cef
 !
 multilink bundle-name authenticated
 !
@@ -61,13 +62,12 @@ redundancy
 interface Loopback0
  no shutdown
  ip address 10.2.10.1 255.255.255.255
- ip ospf 1 area 12
  ipv6 address 2001:DB8:10:2:10::1/128
+ ospfv3 1 ipv6 area 12
 !
 interface Loopback1
  no shutdown
  ip address 11.2.10.1 255.255.255.255
- ip ospf 1 area 12
  ipv6 address 2001:DB8:11:2:10::1/128
 !
 interface GigabitEthernet0/0
@@ -82,21 +82,21 @@ interface GigabitEthernet0/1
  no shutdown
  description PE2-Gi0/0/0/3
  ip address 192.168.102.21 255.255.255.0
- ip ospf 1 area 12
  duplex auto
  speed auto
  media-type rj45
  ipv6 address 2001:D8:192:168:102::21/80
+ ospfv3 1 ipv6 area 12
 !
 interface GigabitEthernet0/2
  no shutdown
  description PE2-Gi0/0/0/4
  ip address 192.168.202.21 255.255.255.0
- ip ospf 1 area 12
  duplex auto
  speed auto
  media-type rj45
  ipv6 address 2001:D8:192:168:202::21/80
+ ospfv3 1 ipv6 area 12
 !
 interface GigabitEthernet0/3
  no shutdown
@@ -138,8 +138,11 @@ interface GigabitEthernet0/7
  speed auto
  media-type rj45
 !
-router ospf 1
+router ospfv3 1
  router-id 10.2.10.1
+ !
+ address-family ipv6 unicast
+ exit-address-family
 !
 ip forward-protocol nd
 !
